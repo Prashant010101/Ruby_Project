@@ -33,6 +33,13 @@ class ShoppingCart
         end
     end
 
+    def remove_items(*products)
+        @items -= products
+        products.each do |product|
+            puts "#{product.name} #{product.quantity} units worth $#{product.price * product.quantity} removed from your cart."
+        end
+    end
+
     def show_items
         if @items.empty?
             puts "Your Shopping cart is empty."
@@ -64,3 +71,12 @@ cart1 = ShoppingCart.new
 cart1.add_items(product1, product2, product4)
 cart1.show_items
 puts "\nTotal Price: \t\t\t$#{cart1.total_price}"
+
+puts "Remove Items Y|N?"
+answer = gets.chomp.upcase
+if answer == 'Y'
+    cart1.remove_items(product1)
+    puts "\n\nyour Cart now have:\n"
+    cart1.show_items
+    puts "\nTotal Price: \t\t\t$#{cart1.total_price}"
+end
