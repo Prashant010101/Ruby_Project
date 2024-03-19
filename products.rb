@@ -1,23 +1,23 @@
 class Product
     attr_accessor :name, :price, :quantity
+
     def initialize(name, price, quantity)
         @name = name
         @price = price
-        @quantity = quantity
-        if quantity > 3
-            puts "You can buy 3 #{name} at a time."
-            puts "Please select 3 or less than 3: "
-            @quantity = gets.chomp.to_i
-            puts "Product       Price/pcs.      Quantity"
-            puts
-
-        end
+        @quantity = validate_quantity(quantity)
     end
+
+    def validate_quantity(quantity)
+        if quantity > 3
+            puts "You can buy 3 #{@name} at a time."
+            puts "Please select 3 or less than 3: "
+            quantity = gets.chomp.to_i
+        end
+        quantity
+    end
+
     def display
-        
-        puts
-        puts "#{@name}          $#{@price}             #{quantity}"
-        puts
+        "#{@name}\t\t$#{@price}\t\t#{@quantity}"
     end
 end
 
@@ -29,6 +29,7 @@ class ShoppingCart
     def add_items(*products)
         products.each do |product|
             @items << product
+            puts "#{product.name} #{product.quantity} units worth $#{product.price * product.quantity} added to cart."
         end
     end
 
@@ -36,11 +37,13 @@ class ShoppingCart
         if @items.empty?
             puts "Your Shopping cart is empty."
         else
-            @items.each_with_index do |item, index|
-                print "#{item.display}"
+            puts "Product\t\tPrice/pcs.\tQuantity"
+            @items.each do |item|
+                puts item.display
             end
         end
     end
+
     def total_price
         sum = 0
         @items.each do |item|
@@ -61,4 +64,3 @@ cart1 = ShoppingCart.new
 cart1.add_items(product1, product2, product4)
 cart1.show_items
 puts "\nTotal Price: \t\t\t$#{cart1.total_price}"
-
